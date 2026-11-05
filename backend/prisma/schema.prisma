@@ -1,0 +1,94 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Etapas do funil de orçamentos. Cada uma é uma coluna do quadro (dnd-kit).
+enum StatusPedido {
+  NOVO
+  EM_CONVERSA
+  PROPOSTA_ENVIADA
+  FECHADO
+  PERDIDO
+}
+
+model Categoria {
+  id       Int       @id @default(autoincrement())
+  nome     String    @unique @db.VarChar(40)
+  servicos Servico[]
+
+  @@map("categorias")
+}
+
+// Tabela principal: o catálogo de serviços da WAW.
+model Servico {
+  id        Int      @id @default(autoincrement())
+  titulo    String   @db.VarChar(80)
+  descricao String
+  precoBase Decimal  @db.Decimal(10, 2)
+  prazoDias Int
+  imagem    String?
+  destaque  Boolean  @default(false)
+  // Dados complementares gerados pela Claude, guardados para não repetir a consulta.
+  dadosIA   Json?
+  criadoEm  DateTime @default(now())
+
+  categoria   Categoria @relation(fields: [categoriaId], references: [id])
+  categoriaId Int
+  admin       Admin     @relation(fields: [adminId], references: [id])
+  adminId     String
+  pedidos     Pedido[]
+
+  @@map("servicos")
+}
+
+model Cliente {
+  id       String   @id @default(uuid())
+  nome     String   @db.VarChar(60)
+  email    String   @unique @db.VarChar(120)
+  senha    String
+  empresa  String?  @db.VarChar(80)
+  cidade   String   @db.VarChar(60)
+  criadoEm DateTime @default(now())
+  pedidos  Pedido[]
+
+  @@map("clientes")
+}
+
+// Tabela de interação: o cliente pede um orçamento de um serviço.
+model Pedido {
+  id                Int          @id @default(autoincrement())
+  mensagem          String
+  investimento      Decimal?     @db.Decimal(10, 2)
+  resposta          String?
+  status            StatusPedido @default(NOVO)
+  // Posição do cartão dentro da coluna do quadro.
+  ordem             Int          @default(0)
+  respondidoEm      DateTime?
+  criadoEm          DateTime     @default(now())
+
+  cliente   Cliente @relation(fields: [clienteId], references: [id], onDelete: Cascade)
+  clienteId String
+  servico   Servico @relation(fields: [servicoId], references: [id])
+  servicoId Int
+  admin     Admin?  @relation(fields: [adminId], references: [id])
+  adminId   String?
+
+  @@map("pedidos")
+}
+
+model Admin {
+  id       String    @id @default(uuid())
+  nome     String    @db.VarChar(60)
+  email    String    @unique @db.VarChar(120)
+  senha    String
+  criadoEm DateTime  @default(now())
+  servicos Servico[]
+  pedidos  Pedido[]
+
+  @@map("admins")
+}

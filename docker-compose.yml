@@ -1,0 +1,16 @@
+# Postgres só para desenvolvimento local. Porta 5433 para não conflitar com outros projetos.
+services:
+  banco:
+    image: postgres:17
+    container_name: waw-orcamentos-postgres
+    environment:
+      POSTGRES_USER: waw
+      POSTGRES_PASSWORD: waw
+      POSTGRES_DB: waw_orcamentos
+    ports:
+      - "5433:5432"
+    volumes:
+      - waw_orcamentos_dados:/var/lib/postgresql/data
+
+volumes:
+  waw_orcamentos_dados:
