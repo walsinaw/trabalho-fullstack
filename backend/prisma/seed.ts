@@ -41,11 +41,15 @@ async function main() {
   const senha = process.env.ADMIN_SENHA
   if (!senha) throw new Error('Defina ADMIN_SENHA no .env antes de rodar o seed')
 
+  // Se o admin já existe, a senha e o nome são atualizados com os valores do .env,
+  // assim trocar ADMIN_SENHA e rodar o seed de novo passa a valer no login.
+  const dadosAdmin = { nome: process.env.ADMIN_NOME ?? 'Equipe WAW', senha: await bcrypt.hash(senha, 10) }
   const admin = await prisma.admin.upsert({
     where: { email },
-    update: {},
-    create: { nome: process.env.ADMIN_NOME ?? 'Equipe WAW', email, senha: await bcrypt.hash(senha, 10) },
+    update: dadosAdmin,
+    create: { ...dadosAdmin, email },
   })
+  console.log('Admin pronto:', email)
 
   if ((await prisma.servico.count()) > 0) {
     console.log('O banco já tem serviços: nada foi alterado além do admin.')
