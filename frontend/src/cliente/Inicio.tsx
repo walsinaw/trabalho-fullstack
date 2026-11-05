@@ -90,7 +90,7 @@ export function Inicio() {
             </article>
           ))}
         </div>
-        {temIA && <p className="nota-ia">* Informação gerada por IA (Claude, da Anthropic). Sujeita a erros.</p>}
+        {temIA && <p className="nota-ia">* Informação gerada por IA (Gemini, do Google). Sujeita a erros.</p>}
       </section>
     </>
   )

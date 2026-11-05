@@ -4,7 +4,7 @@ Sistema full stack em que clientes conhecem os serviços da WAW Studio e pedem o
 
 ## Tecnologias
 
-- Back-end: Node, Express, Prisma, PostgreSQL, Zod, Bcrypt, JsonWebToken, Nodemailer, Claude API
+- Back-end: Node, Express, Prisma, PostgreSQL, Zod, Bcrypt, JsonWebToken, Nodemailer, Gemini API
 - Front-end: React, Vite, React Router, React Hook Form, Zustand, SweetAlert2, Victory, dnd-kit
 
 ## Pacote do Trabalho #2: dnd-kit
@@ -87,8 +87,8 @@ O site abre em `http://localhost:5175` e a API em `http://localhost:3333`. As cr
 | backend | `DATABASE_URL` | Conexão com o PostgreSQL |
 | backend | `JWT_SECRET` | Assinatura dos tokens de login |
 | backend | `FRONTEND_URL` | Endereços do front autorizados no CORS |
-| backend | `ANTHROPIC_API_KEY` | Consulta à IA. Vazia: o sistema funciona sem os dados de IA |
-| backend | `CLAUDE_MODEL` | Opcional. Troca o modelo da Claude (padrão `claude-opus-5-5`) |
+| backend | `GEMINI_API_KEY` | Consulta à IA. Vazia: o sistema funciona sem os dados de IA |
+| backend | `GEMINI_MODEL` | Opcional. Troca o modelo do Gemini (padrão `gemini-3.6-flash`) |
 | backend | `SMTP_*` | Envio de e-mail. `SMTP_HOST` vazio: a resposta só aparece no sistema |
 | backend | `ADMIN_NOME`, `ADMIN_EMAIL`, `ADMIN_SENHA` | Primeiro administrador, criado pelo seed |
 | frontend | `VITE_API_URL` | Endereço da API |

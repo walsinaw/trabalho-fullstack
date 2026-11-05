@@ -70,7 +70,7 @@ export function DetalheServico() {
             <ul>{servico.dadosIA.entregas.map((t) => <li key={t}>{t}</li>)}</ul>
             <h2>Para pensar antes de pedir *</h2>
             <ul>{servico.dadosIA.perguntas.map((t) => <li key={t}>{t}</li>)}</ul>
-            <p className="nota-ia">* Informações geradas por IA (Claude, da Anthropic). Sujeitas a erros.</p>
+            <p className="nota-ia">* Informações geradas por IA (Gemini, do Google). Sujeitas a erros.</p>
           </div>
         )}
 

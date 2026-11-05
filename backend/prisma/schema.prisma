@@ -33,7 +33,7 @@ model Servico {
   prazoDias Int
   imagem    String?
   destaque  Boolean  @default(false)
-  // Dados complementares gerados pela Claude, guardados para não repetir a consulta.
+  // Dados complementares gerados pelo Gemini, guardados para não repetir a consulta.
   dadosIA   Json?
   criadoEm  DateTime @default(now())
 

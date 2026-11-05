@@ -93,12 +93,18 @@ async function main() {
 
   if (iaConfigurada()) {
     for (const s of criados) {
-      const dadosIA = await gerarDadosIA({ ...s, categoria: s.categoria.nome })
-      await prisma.servico.update({ where: { id: s.id }, data: { dadosIA } })
-      console.log('IA gerada:', s.titulo)
+      // Uma falha, como o limite do plano gratuito, não pode derrubar o seed nem o deploy.
+      // O que faltar pode ser gerado depois, na listagem de serviços do admin.
+      try {
+        const dadosIA = await gerarDadosIA({ ...s, categoria: s.categoria.nome })
+        await prisma.servico.update({ where: { id: s.id }, data: { dadosIA } })
+        console.log('IA gerada:', s.titulo)
+      } catch (erro) {
+        console.error('IA não gerada para', s.titulo, erro)
+      }
     }
   } else {
-    console.log('ANTHROPIC_API_KEY vazia: os dados de IA não foram gerados.')
+    console.log('GEMINI_API_KEY vazia: os dados de IA não foram gerados.')
   }
   console.log('Seed concluído.')
 }
